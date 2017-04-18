@@ -21,14 +21,14 @@ public class masterActionsForClient implements Runnable{
 	public void run(){
 		try {
 			q = (Query) inFromClient.readObject();
-			for(int i = 0; i<10; i++){
-				q.startPoint.Lat ++;
-				q.startPoint.Long --;
-				System.out.println(q.startPoint.Lat + " " + q.startPoint.Long);
+			r = searchCache();
+			if(r == null){
+				//TODO WORKERS, API:String Parser(URL + JSON)
 			}
-			r = new Routes(q.startPoint, q.endPoint, null);
+			
 			outToClient.writeObject(r);
 			outToClient.flush();
+			
 			inFromClient.close();
 			outToClient.close();
 		} catch (IOException e) {
@@ -40,9 +40,20 @@ public class masterActionsForClient implements Runnable{
 
 	private Routes searchCache(){
 		for(int i = 0; i < Master.cache.length; i++){
-			if(Master.cache[i].start == q.startPoint && Master.cache[i].destination == q.endPoint){}
+			if(Master.cache[i].start.equals(q.startPoint) && Master.cache[i].destination.equals(q.endPoint)){
+				return Master.cache[i];
+			}
 		}
 		return null;
 	}
-	private void updateCache(){}
+	private void updateCache(Routes r){
+		if(Master.oldestCachedRoute < 100){
+			Master.cache[Master.oldestCachedRoute] = r;
+			Master.oldestCachedRoute++;
+		}
+		else{
+			Master.oldestCachedRoute = 0;
+			updateCache(r);
+		}
+	}
 }

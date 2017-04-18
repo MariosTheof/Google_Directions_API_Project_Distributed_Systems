@@ -17,6 +17,7 @@ public class Master{
 	ServerSocket masterSocket;
 	Socket connectionWithClient = null;
 	static Routes cache[] = new Routes[100];
+	static int oldestCachedRoute = 0;
 	public void initialize() {
 		try {
 			masterSocket = new ServerSocket(this.portForClients, 10);

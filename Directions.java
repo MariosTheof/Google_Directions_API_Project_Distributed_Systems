@@ -1,7 +1,7 @@
 import java.io.Serializable;
 public class Directions implements Serializable{
-	Object direction;
-	Directions(Object d){
+	String direction;
+	Directions(String d){
 		direction = d;
 	}
 }
