@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import us.monoid.web.Resty;
+import java.io.UnsupportedEncodingException;
 
 
 public class MapWorker extends Worker{
@@ -66,4 +67,8 @@ public class MapWorker extends Worker{
 			return null;
 		}
 	}
+
+	private String encode(String arg) throws UnsupportedEncodingException {
+        return URLEncoder.encode(arg, ENCODING);
+    }
 }
