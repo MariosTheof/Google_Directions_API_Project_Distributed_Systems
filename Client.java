@@ -6,8 +6,8 @@ import java.net.UnknownHostException;
 import java.util.Scanner;
 
 public class Client {
-	static String MasterIP = "127.0.0.1";
-	static int MasterPort = 4320;
+	static final String MasterIP = "127.0.0.1";
+	static final int MasterPort = 4320;
 	static Socket clientToMasterSocket = null;
 	static ObjectOutputStream outToMaster = null;
 	static ObjectInputStream inFromMaster = null;

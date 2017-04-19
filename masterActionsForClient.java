@@ -9,10 +9,10 @@ public class masterActionsForClient implements Runnable{
 	ObjectOutputStream outToClient;
 	Query q = null;
 	Routes r = null;
-	public masterActionsForClient(Socket connectionWithClient) {
+	public masterActionsForClient(Socket connection) {
 		try {
-			outToClient = new ObjectOutputStream(connectionWithClient.getOutputStream());
-			inFromClient = new ObjectInputStream(connectionWithClient.getInputStream());
+			outToClient = new ObjectOutputStream(connection.getOutputStream());
+			inFromClient = new ObjectInputStream(connection.getInputStream());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -21,11 +21,15 @@ public class masterActionsForClient implements Runnable{
 	public void run(){
 		try {
 			q = (Query) inFromClient.readObject();
-			r = searchCache();
-			if(r == null){
+			//r = searchCache();
+			//if(r == null){//TODO UNCOMMENT
+				new Master(4321).initialize(1, q);
+				//new Master(4322).initialize(2, q);
+				//new Master(4323).initialize(3, q);
+				//updateCache(r);//TODO UPDATE
 				//TODO WORKERS, API:String Parser(URL + JSON)
-			}
-			
+			//}
+			r.start.Lat = q.startPoint.Lat;
 			outToClient.writeObject(r);
 			outToClient.flush();
 			
@@ -47,13 +51,15 @@ public class masterActionsForClient implements Runnable{
 		return null;
 	}
 	private void updateCache(Routes r){
-		if(Master.oldestCachedRoute < 100){
-			Master.cache[Master.oldestCachedRoute] = r;
-			Master.oldestCachedRoute++;
-		}
-		else{
-			Master.oldestCachedRoute = 0;
-			updateCache(r);
+		synchronized(Master.cache){
+			if(Master.oldestCachedRoute < 100){
+				Master.cache[Master.oldestCachedRoute] = r;
+				Master.oldestCachedRoute++;
+			}
+			else{
+				Master.oldestCachedRoute = 0;
+				updateCache(r);
+			}
 		}
 	}
 }
