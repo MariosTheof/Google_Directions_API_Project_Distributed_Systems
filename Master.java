@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -91,6 +92,23 @@ public class Master{
 		}
 		//TODO close
 	}
+	
+	public TApair initialize(boolean b){//TODO MIGHT HAVE TO CHANGE ARG
+		try {
+			//while (true) {
+			connection = new Socket(REDUCERIP, port);
+
+			masterActionsForReducer mAFR = new masterActionsForReducer(connection);
+			Thread reducerThread = new Thread(mAFR);
+			reducerThread.start();
+			return new TApair(reducerThread, mAFR);
+			//}
+		}  catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 	public static BigInteger md5hash(String s) {
 		MessageDigest m = null;
 		try {
@@ -101,6 +119,7 @@ public class Master{
 		m.update(s.getBytes(), 0, s.length());	
 		return new BigInteger(1, m.digest());
 	}
+	
 	private static void hashorder(){
 		int[] order = new int[3];
 		BigInteger max = Master.WHArray[0];

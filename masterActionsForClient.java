@@ -3,15 +3,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.math.BigInteger;
 import java.net.Socket;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 public class masterActionsForClient implements Runnable{
 
 	ObjectInputStream inFromClient;
 	ObjectOutputStream outToClient;
 	Query q = null;
-	Routes r = null;
+	Routes endresult = null;
 	BigInteger QueryHash;
 	public masterActionsForClient(Socket connection) {
 		try {
@@ -25,25 +23,39 @@ public class masterActionsForClient implements Runnable{
 	public void run(){
 		try {
 			q = (Query) inFromClient.readObject();
-			//r = searchCache();
-			//if(r == null){//TODO UNCOMMENT
+			//endresult = searchCache();
+			//if(endresult == null){//TODO UNCOMMENT
 
-			QueryHash = Master.md5hash(Double.toString(q.startPoint.Lat)+ Double.toString(q.startPoint.Long) + Double.toString(q.endPoint.Lat) + Double.toString(q.endPoint.Long));
+				//QueryHash = Master.md5hash(Double.toString(q.startPoint.Lat)+ Double.toString(q.startPoint.Long) + Double.toString(q.endPoint.Lat) + Double.toString(q.endPoint.Long));
 			
-				TApair ta = new Master(4321).initialize(1, q);
+				TApair taw1 = new Master(4321).initialize(1, q);
+				//new Master(4322).initialize(2, q);
+				//new Master(4323).initialize(3, q);
 				try {
-					ta.thread.join();
+					taw1.thread.join();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				q = ta.actions.getQuery();
-				r = new Routes(q);
-				//new Master(4322).initialize(2, q);
-				//new Master(4323).initialize(3, q);
+				//TODO JOIN THE 3 THREADS
+				
+				//q = ta.actions.getQuery(); //test
+				//r = new Routes(q); //test
+				
+
+				TApair tar = new Master(4321).initialize(true);
+				try {
+					tar.thread.join();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				if(tar.actionsr.getRoutes() == null){
+					//TODO CASE ASSIGNWORKER FOR GOOGLE DIRECTIONS API
+				} else{
+					//TODO FIND BEST RESULT WITH EUCLEDEAN METHOD
+				}
 				//updateCache(r);
-				//TODO WORKERS, API:String Parser(URL + JSON)
 			//}
-			outToClient.writeObject(r);
+			outToClient.writeObject(endresult);
 			outToClient.flush();
 			
 			inFromClient.close();
@@ -75,7 +87,7 @@ public class masterActionsForClient implements Runnable{
 			}
 		}
 	}
-	private int assignWorker(BigInteger qh){//TODO HASH RANGES
+	private int assignWorker(BigInteger qh){
 		for(int i = 0; i < 3; i++) {
 			if(QueryHash.mod(Master.WHArray[0]).compareTo(Master.WHArray[2 - i]) == -1){
 				return i + 1;

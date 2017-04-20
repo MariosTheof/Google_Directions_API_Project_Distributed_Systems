@@ -1,10 +1,7 @@
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.math.BigInteger;
 import java.net.Socket;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 public class masterActionsForWorkers implements Runnable{
 
@@ -29,7 +26,7 @@ public class masterActionsForWorkers implements Runnable{
 			outToWorker.flush();
 			
 			
-			q = (Query) inFromWorker.readObject();
+			//q = (Query) inFromWorker.readObject(); //test
 			 
 			//workerDone = inFromWorker.readBoolean();
 			
@@ -37,9 +34,9 @@ public class masterActionsForWorkers implements Runnable{
 			outToWorker.close();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}catch (ClassNotFoundException e) {
+		}/*catch (ClassNotFoundException e) {
 			e.printStackTrace();
-		}
+		}*/ //test
 	}
 	public Query getQuery(){
 		return q;
