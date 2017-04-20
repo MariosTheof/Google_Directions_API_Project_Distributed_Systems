@@ -1,7 +1,10 @@
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.math.BigInteger;
 import java.net.Socket;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class masterActionsForWorkers implements Runnable{
 
@@ -21,7 +24,7 @@ public class masterActionsForWorkers implements Runnable{
 	}
 	
 	public void run(){
-		try {
+		try {			
 			outToWorker.writeObject(q);
 			outToWorker.flush();
 			
@@ -38,5 +41,7 @@ public class masterActionsForWorkers implements Runnable{
 			e.printStackTrace();
 		}
 	}
-
+	public Query getQuery(){
+		return q;
+	}
 }

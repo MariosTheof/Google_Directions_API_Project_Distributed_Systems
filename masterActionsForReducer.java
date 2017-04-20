@@ -5,3 +5,4 @@ import java.net.Socket;
 
 public class masterActionsForReducer {
 }
+//TODO EUCLEDEAN

@@ -7,6 +7,6 @@ public class Point implements Serializable{
 		this.Long = Longitude;
 	}
 	public boolean equals(Point b){
-		return (Math.abs(this.Lat - b.Lat) < 0.001);
+		return (Math.abs(this.Lat - b.Lat) < 0.001) && (Math.abs(this.Long - b.Long) < 0.001);
 	}
 }

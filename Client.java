@@ -62,7 +62,9 @@ public class Client {
 		return r;
 	}
 	private static void showResults(Routes r){
-		System.out.println(r.start.Lat + " " + r.start.Long);//TODO
+		System.out.println(r.start.Lat + " " + r.start.Long);
+		System.out.println(r.destination.Lat + " " + r.destination.Long);
+		//TODO
 	}
 	public static void main(String args[]) throws IOException{
 		Scanner scan = new Scanner(System.in);

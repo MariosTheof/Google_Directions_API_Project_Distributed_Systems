@@ -8,5 +8,14 @@ public class Routes implements Serializable{
 		destination = b;
 		direction = d;
 	}
-
+	Routes(Query q, Directions d){
+		start = q.startPoint;
+		destination = q.endPoint;
+		direction = d;
+	}
+	Routes(Query q){
+		start = q.startPoint;
+		destination = q.endPoint;
+		direction = null;
+	}
 }
