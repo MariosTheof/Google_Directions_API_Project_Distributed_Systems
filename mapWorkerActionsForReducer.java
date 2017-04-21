@@ -24,12 +24,14 @@ public class mapWorkerActionsForReducer implements Runnable{
 	@Override
 	public void run() {
 		try {
+			//Thread.sleep(1000);
 			outToReducer.writeObject(this.routes);
 			outToReducer.flush();
 
-			System.out.println("Sent routes to reducer...");//DEBUGGING
-			//outToReducer.close();
-			//inFromReducer.close();
+			System.out.println("Sent r array to reducer with 1st query with points: " + routes[0].start.Lat + "  " + routes[0].start.Long + " " + routes[0].destination.Lat + " " + routes[0].destination.Long);//DEBUGGING
+
+			outToReducer.close();
+			inFromReducer.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

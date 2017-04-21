@@ -29,6 +29,7 @@ public class reducerActionsForMaster implements Runnable{
 		reducerActionsForWorkers rAFW1 = new reducerActionsForWorkers(portsforworkers[0]);
 		Thread worker1Thread = new Thread(rAFW1);
 		worker1Thread.start();
+		System.out.println("Created thread for worker...");//DEBUGGING
 		TApair taw1 = new TApair (worker1Thread, rAFW1);
 		/*
 		reducerActionsForWorkers rAFW2 = new reducerActionsForWorkers(portsforworkers[1]);
@@ -56,6 +57,7 @@ public class reducerActionsForMaster implements Runnable{
 
 		try {
 			taw1.thread.join();
+			System.out.println("thread for worker just died... " + taw1.thread.isAlive());//DEBUGGING
 			//taw2.thread.join();
 			//taw3.thread.join();
 		} catch (InterruptedException e) {
@@ -64,7 +66,12 @@ public class reducerActionsForMaster implements Runnable{
 
 		System.out.println("Worker Thread 1 ended...");//DEBUGGING
 		//r = MergeRoutes(taw1.actionsrw.getRoutes(), taw2.actionsrw.getRoutes(), taw3.actionsrw.getRoutes());
-		r = MergeRoutes(taw1.actionsrw.getRoutes(), taw1.actionsrw.getRoutes(), taw1.actionsrw.getRoutes());
+		Routes r1[] = taw1.actionsrw.getRoutes();
+
+		System.out.println("thread for worker returned r array with 1st query with points: " + r1[0].start.Lat + "  " + r1[0].start.Long + " " + r1[0].destination.Lat + " " + r1[0].destination.Long);//DEBUGGING
+		r = MergeRoutes(r1, r1, r1);
+
+		System.out.println("Merge Finished...");//DEBUGGING
 		try {
 			System.out.println("Sending routes to master...");//DEBUGGING
 			outToMaster.writeObject(r);
@@ -72,14 +79,18 @@ public class reducerActionsForMaster implements Runnable{
 			
 			
 			
-			//outToMaster.close();
-			//inFromMaster.close();
+			outToMaster.close();
+			inFromMaster.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 	}
 	private Routes[] MergeRoutes(Routes [] r1, Routes [] r2, Routes [] r3){
+		if(r1 == null && r2 == null && r3 == null){
+			System.out.println("einai null");
+			return null;
+		}
 		if(r1.length == 0 && r2.length == 0 && r3.length == 0){
 			return null;
 		}

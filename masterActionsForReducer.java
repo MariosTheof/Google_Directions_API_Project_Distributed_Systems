@@ -31,8 +31,8 @@ public class masterActionsForReducer implements Runnable{
 			
 			
 
-			//inFromReducer.close();
-			//outToReducer.close();
+			outToReducer.close();
+			inFromReducer.close();
 			
 		} catch (IOException e) {
 			e.printStackTrace();

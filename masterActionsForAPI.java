@@ -29,9 +29,9 @@ public class masterActionsForAPI implements Runnable{
 			//q = (Query) inFromWorker.readObject(); //test
 			 
 			//workerDone = inFromWorker.readBoolean();
-			
-			//inFromWorker.close();
-			//outToWorker.close();
+
+			outToWorker.close();
+			inFromWorker.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}/*catch (ClassNotFoundException e) {

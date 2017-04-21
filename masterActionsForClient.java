@@ -25,7 +25,7 @@ public class masterActionsForClient implements Runnable{
 			q = (Query) inFromClient.readObject();
 			//endresult = searchCache();
 			//if(endresult == null){//TODO UNCOMMENT
-						
+			System.out.println("Got query from client with points: " + q.startPoint.Lat + "  " + q.startPoint.Long + " " + q.endPoint.Lat + " " + q.endPoint.Long);//DEBUGGING
 				TApair taw1 = new Master(4321).initialize(1, q);
 				//TApair taw2 = new Master(4322).initialize(2, q);
 				//TApair taw3 = new Master(4323).initialize(3, q);
@@ -60,9 +60,9 @@ public class masterActionsForClient implements Runnable{
 			endresult = tar.actionsr.getRoutes()[0];
 			outToClient.writeObject(endresult);
 			outToClient.flush();
-			
-			//inFromClient.close();
-			//outToClient.close();
+
+			outToClient.close();
+			inFromClient.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}catch (ClassNotFoundException cnfe) {

@@ -16,7 +16,7 @@ public class ReduceWorker extends Worker{
 	}
 
 	public static void main(String args[]){
-		new ReduceWorker(4327).initialize();
+		new ReduceWorker(4324).initialize();
 	}
 	@Override
 	public void initialize() {

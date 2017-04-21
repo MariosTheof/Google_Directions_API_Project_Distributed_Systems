@@ -65,13 +65,13 @@ public class Master{
 			//}
 		} catch (IOException ioException) {
 			ioException.printStackTrace();
-		} /*finally {
+		} finally {
 			try {
 				masterSocket.close();
 			} catch (IOException ioException) {
 				ioException.printStackTrace();
 			}
-		}*/
+		}
 	}
 	public TApair initialize(int WorkerID, Query q){
 		try {

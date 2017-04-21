@@ -25,7 +25,7 @@ public class masterActionsForWorkers implements Runnable{
 			
 			outToWorker.writeObject(q);
 			outToWorker.flush();
-			System.out.println("Sent query to worker...");//DEBUGGING
+			System.out.println("Sent query to worker with points: " + q.startPoint.Lat + "  " + q.startPoint.Long + " " + q.endPoint.Lat + " " + q.endPoint.Long);//DEBUGGING
 			
 			
 			//q = (Query) inFromWorker.readObject(); //test
@@ -33,8 +33,10 @@ public class masterActionsForWorkers implements Runnable{
 			workerDone = inFromWorker.readBoolean();
 
 			System.out.println("Worker is done...");//DEBUGGING
-			//inFromWorker.close();
-			//outToWorker.close();
+			
+			outToWorker.close();
+			inFromWorker.close();
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}/*catch (ClassNotFoundException e) {

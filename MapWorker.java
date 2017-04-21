@@ -40,16 +40,19 @@ public class MapWorker extends Worker{
 				Thread masterThread = new Thread(new mapWorkerActionsForMaster(connection));
 				masterThread.start();
 				System.out.println("Started thread for master...");//DEBUGGING
+				masterThread.join();
 				
 		} catch (IOException ioException) {
 			ioException.printStackTrace();
-		} /*finally {
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} finally {
 			try {
 				workerSocket.close();
 			} catch (IOException ioException) {
 				ioException.printStackTrace();
 			}
-		}*/
+		}
 		
 		
 	}
