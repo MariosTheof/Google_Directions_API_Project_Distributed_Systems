@@ -1,7 +1,9 @@
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+
 import us.monoid.web.Resty;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
@@ -11,17 +13,15 @@ public class MapWorker extends Worker{
 	private static String LOCATION_ARG = "%s,%s";
 	private static String ENCODING = "UTF-8";
 	final int WORKERID;
-	int port;
+	int portformaster;
 	ServerSocket workerSocket;
 	Socket connection = null;
 	MapWorker(int id, int p){
 		this.WORKERID = id;
-		this.port = p;
+		this.portformaster = p;
 	}
 	public static void main(String args[]){
-		new MapWorker(1, 4321).initialize();
-		//new MapWorker(2, 4322).initialize();//TODO
-		//new MapWorker(3, 4323).initialize();
+		new MapWorker(1, 4321).initialize();//TODO CHANGE PORTS AND WORKERID ACCORDINGLY
 	}
 	@Override
 	public void initialize() {
@@ -31,23 +31,25 @@ public class MapWorker extends Worker{
 	@Override
 	public void waitForTasksThread() {
 		try {
-			workerSocket = new ServerSocket(this.port, 10);
+			workerSocket = new ServerSocket(this.portformaster, 10);
+			System.out.println("Opened Socket for Master with port " + this.portformaster);//DEBUGGING
 
 			//while (true) {
 				connection = workerSocket.accept();
-
+				
 				Thread masterThread = new Thread(new mapWorkerActionsForMaster(connection));
 				masterThread.start();
+				System.out.println("Started thread for master...");//DEBUGGING
 				
 		} catch (IOException ioException) {
 			ioException.printStackTrace();
-		} finally {
+		} /*finally {
 			try {
 				workerSocket.close();
 			} catch (IOException ioException) {
 				ioException.printStackTrace();
 			}
-		}
+		}*/
 		
 		
 	}

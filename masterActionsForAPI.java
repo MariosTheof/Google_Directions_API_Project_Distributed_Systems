@@ -3,14 +3,14 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class masterActionsForWorkers implements Runnable{
+public class masterActionsForAPI implements Runnable{
 
 	ObjectInputStream inFromWorker;
 	ObjectOutputStream outToWorker;
 	Query q = null;
 	Routes r = null;
-	Boolean workerDone = false;
-	public masterActionsForWorkers(Socket connection, Query query) {
+	//Boolean workerDone = false;
+	public masterActionsForAPI(Socket connection, Query query) {
 		try {
 			q = query;
 			outToWorker = new ObjectOutputStream(connection.getOutputStream());
@@ -22,17 +22,14 @@ public class masterActionsForWorkers implements Runnable{
 	
 	public void run(){
 		try {			
-			
 			outToWorker.writeObject(q);
 			outToWorker.flush();
-			System.out.println("Sent query to worker...");//DEBUGGING
 			
 			
 			//q = (Query) inFromWorker.readObject(); //test
+			 
+			//workerDone = inFromWorker.readBoolean();
 			
-			workerDone = inFromWorker.readBoolean();
-
-			System.out.println("Worker is done...");//DEBUGGING
 			//inFromWorker.close();
 			//outToWorker.close();
 		} catch (IOException e) {
@@ -40,8 +37,5 @@ public class masterActionsForWorkers implements Runnable{
 		}/*catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}*/ //test
-	}
-	public Query getQuery(){
-		return q;
 	}
 }

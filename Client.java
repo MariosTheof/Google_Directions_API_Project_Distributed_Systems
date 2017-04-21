@@ -18,8 +18,10 @@ public class Client {
 		try {
 			
 			clientToMasterSocket = new Socket(MasterIP, MasterPort);
-			
+
+			System.out.println("Created Socket for master");//DEBUGGING
 			sendQueryToServer(q);
+			System.out.println("Sent Query to master");//DEBUGGING
 			
 			Routes result = getResults();
 			
@@ -41,6 +43,7 @@ public class Client {
 			outToMaster = new ObjectOutputStream(clientToMasterSocket.getOutputStream());
 			outToMaster.writeObject(q);
 			outToMaster.flush();
+			System.out.println("Query flushed");//DEBUGGING
 			} catch (IOException ioException) {
 				ioException.printStackTrace();
 		}
@@ -53,6 +56,7 @@ public class Client {
 		Routes r = null;
 		try {
 			inFromMaster = new ObjectInputStream(clientToMasterSocket.getInputStream());
+			System.out.println("Waiting for response...");//DEBUGGING
 			r = (Routes) inFromMaster.readObject(); 
 		} catch (IOException e) {
 			e.printStackTrace();

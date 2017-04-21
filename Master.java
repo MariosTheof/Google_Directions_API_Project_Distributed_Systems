@@ -24,7 +24,9 @@ public class Master{
 	}
 	public static void main(String args[]) {
 		Master.hashorder();
+		System.out.println("hashorder...");//DEBUGGING
 		new Master(4320).initialize();//CHANGE THE PORT ARGUMENT DEPENDING ON THE COMPUTER THE MAPPER WILL RUN ON (THE OTHER 2 MAPPERS WILL HAVE PORTS 4322, 4323)
+	
 	}
 
 	ServerSocket masterSocket;
@@ -36,10 +38,12 @@ public class Master{
 			masterSocket = new ServerSocket(this.port, 10);
 
 			//while (true) {
+				System.out.println("Opened Socket for Client with port " + this.port);//DEBUGGING
 				connection = masterSocket.accept();
 
 				Thread clientThread = new Thread(new masterActionsForClient(connection));
 				clientThread.start();
+				System.out.println("Started thread for client...");//DEBUGGING
 				try {
 					clientThread.join();
 				} catch (InterruptedException e) {
@@ -61,29 +65,33 @@ public class Master{
 			//}
 		} catch (IOException ioException) {
 			ioException.printStackTrace();
-		} finally {
+		} /*finally {
 			try {
 				masterSocket.close();
 			} catch (IOException ioException) {
 				ioException.printStackTrace();
 			}
-		}
+		}*/
 	}
 	public TApair initialize(int WorkerID, Query q){
 		try {
 			//while (true) {
 			if(WorkerID == 1){
 				connection = new Socket(WORKER1IP, port);
+				System.out.println("Connected with worker 1 with port " + this.port);//DEBUGGING
 			}
 			else if(WorkerID == 2){
 				connection = new Socket(WORKER2IP, port);
+				System.out.println("Connected with worker 1 with port " + this.port);//DEBUGGING
 			}
 			else if(WorkerID == 3){
 				connection = new Socket(WORKER3IP, port);
+				System.out.println("Connected with worker 1 with port " + this.port);//DEBUGGING
 			}
 				masterActionsForWorkers mAFW = new masterActionsForWorkers(connection, q);
 				Thread workerThread = new Thread(mAFW);
 				workerThread.start();
+				System.out.println("Started thread for worker...");//DEBUGGING
 				return new TApair(workerThread, mAFW);
 			//}
 		} catch (IOException ioException) {
@@ -97,10 +105,12 @@ public class Master{
 		try {
 			//while (true) {
 			connection = new Socket(REDUCERIP, port);
+			System.out.println("Opened Socket for Reducer with port " + this.port);//DEBUGGING
 
 			masterActionsForReducer mAFR = new masterActionsForReducer(connection);
 			Thread reducerThread = new Thread(mAFR);
 			reducerThread.start();
+			System.out.println("Started thread for reducer...");//DEBUGGING
 			return new TApair(reducerThread, mAFR);
 			//}
 		}  catch (IOException e) {

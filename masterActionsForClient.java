@@ -25,41 +25,44 @@ public class masterActionsForClient implements Runnable{
 			q = (Query) inFromClient.readObject();
 			//endresult = searchCache();
 			//if(endresult == null){//TODO UNCOMMENT
-
-				//QueryHash = Master.md5hash(Double.toString(q.startPoint.Lat)+ Double.toString(q.startPoint.Long) + Double.toString(q.endPoint.Lat) + Double.toString(q.endPoint.Long));
-			
+						
 				TApair taw1 = new Master(4321).initialize(1, q);
-				//new Master(4322).initialize(2, q);
-				//new Master(4323).initialize(3, q);
+				//TApair taw2 = new Master(4322).initialize(2, q);
+				//TApair taw3 = new Master(4323).initialize(3, q);
 				try {
 					taw1.thread.join();
+					//taw2.thread.join();
+					//taw3.thread.join();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				//TODO JOIN THE 3 THREADS
 				
 				//q = ta.actions.getQuery(); //test
 				//r = new Routes(q); //test
 				
 
-				TApair tar = new Master(4321).initialize(true);
+				TApair tar = new Master(4324).initialize(true);
 				try {
 					tar.thread.join();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 				if(tar.actionsr.getRoutes() == null){
+
+					//QueryHash = Master.md5hash(Double.toString(q.startPoint.Lat)+ Double.toString(q.startPoint.Long) + Double.toString(q.endPoint.Lat) + Double.toString(q.endPoint.Long));
+
 					//TODO CASE ASSIGNWORKER FOR GOOGLE DIRECTIONS API
 				} else{
 					//TODO FIND BEST RESULT WITH EUCLEDEAN METHOD
 				}
 				//updateCache(r);
 			//}
+			endresult = tar.actionsr.getRoutes()[0];
 			outToClient.writeObject(endresult);
 			outToClient.flush();
 			
-			inFromClient.close();
-			outToClient.close();
+			//inFromClient.close();
+			//outToClient.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}catch (ClassNotFoundException cnfe) {
