@@ -17,7 +17,7 @@ public class MapWorker extends Worker{
 		this.portformaster = p;
 	}
 	public static void main(String args[]){
-		new MapWorker(1, 4321).initialize();//TODO CHANGE PORTS AND WORKERID ACCORDINGLY
+		new MapWorker(1, 4321).initialize();//CHANGE PORTS AND WORKERID ACCORDINGLY
 	}
 	@Override
 	public void initialize() {

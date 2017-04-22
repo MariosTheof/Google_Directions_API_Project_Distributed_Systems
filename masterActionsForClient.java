@@ -24,7 +24,7 @@ public class masterActionsForClient implements Runnable{
 		try {
 			q = (Query) inFromClient.readObject();
 			//endresult = searchCache();
-			//if(endresult == null){//TODO UNCOMMENT
+			//if(endresult == null){
 			System.out.println("Got query from client with points: " + q.startPoint.Lat + "  " + q.startPoint.Long + " " + q.endPoint.Lat + " " + q.endPoint.Long);//DEBUGGING
 				TApair taw1 = new Master(4321).initialize(1, q);
 				//TApair taw2 = new Master(4322).initialize(2, q);
@@ -48,54 +48,123 @@ public class masterActionsForClient implements Runnable{
 					e.printStackTrace();
 				}
 				if(tar.actionsr.getRoutes() == null){
-
+					/*try {
+						Thread.sleep(2000);
+					} catch (InterruptedException e1) {//test
+						e1.printStackTrace();
+					}*/
 					QueryHash = Master.md5hash(Double.toString(q.startPoint.Lat)+ Double.toString(q.startPoint.Long) + Double.toString(q.endPoint.Lat) + Double.toString(q.endPoint.Long));
 					int WorkerIDforAPI = assignWorker(QueryHash);
-					System.out.println("WorkerIDforAPI: " + WorkerIDforAPI);
-					synchronized(taw1.actionsw.startAPI){
-						//taw1.actionsw.startAPI = true;//test
-						taw1.actionsw.startAPI.notify();
-					}
-					try {//test
-						taw1.thread.join();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
+					System.out.println("WorkerIDforAPI: " + WorkerIDforAPI);//test
+					synchronized(taw1.actionsw.threadlock){
+						System.out.println("About to notify the other thread...");
+						taw1.actionsw.threadlock.notify();
+						taw1.actionsw.threadlock = true;//test
+						taw1.actionsw.startAPI = true;//test
 					}
 					endresult = taw1.actionsw.getAPIRoutes();//test
-					/*try {
+					try {
 						if(WorkerIDforAPI == 1){
-							taw1.actionsw.startAPI = true;
-							//taw2.actionsw.startAPI = false;
-							//taw3.actionsw.startAPI = false;
+							synchronized(taw1.actionsw.threadlock){
+								System.out.println("About to notify the other thread...");
+								taw1.actionsw.threadlock.notify();
+								taw1.actionsw.threadlock = true;//test
+								taw1.actionsw.startAPI = true;//test
+							}
+							/*
+							synchronized(taw2.actionsw.threadlock){
+								System.out.println("About to notify the other thread...");
+								taw2.actionsw.threadlock.notify();
+								taw2.actionsw.threadlock = true;//test
+								taw2.actionsw.startAPI = false;//test
+							}*/
+							/*
+							synchronized(taw3.actionsw.threadlock){
+								System.out.println("About to notify the other thread...");
+								taw3.actionsw.threadlock.notify();
+								taw3.actionsw.threadlock = true;//test
+								taw3.actionsw.startAPI = false;//test
+							}*/
 							taw1.thread.join();
 							endresult = taw1.actionsw.getAPIRoutes();
 						}else if(WorkerIDforAPI == 2){
-							taw1.actionsw.startAPI = false;
-							//taw2.actionsw.startAPI = true;
-							//taw3.actionsw.startAPI = false;
+							synchronized(taw1.actionsw.threadlock){
+								System.out.println("About to notify the other thread...");
+								taw1.actionsw.threadlock.notify();
+								taw1.actionsw.threadlock = true;//test
+								taw1.actionsw.startAPI = false;//test
+							}
+							/*
+							synchronized(taw2.actionsw.threadlock){
+								System.out.println("About to notify the other thread...");
+								taw2.actionsw.threadlock.notify();
+								taw2.actionsw.threadlock = true;//test
+								taw2.actionsw.startAPI = true;//test
+							}*/
+							/*
+							synchronized(taw3.actionsw.threadlock){
+								System.out.println("About to notify the other thread...");
+								taw3.actionsw.threadlock.notify();
+								taw3.actionsw.threadlock = true;//test
+								taw3.actionsw.startAPI = false;//test
+							}*/
 							//taw2.thread.join();
 							//endresult = taw2.actionsw.getAPIRoutes();						
 						}else if(WorkerIDforAPI == 3){
-							taw1.actionsw.startAPI = false;
-							//taw2.actionsw.startAPI = false;
-							//taw3.actionsw.startAPI = true;
+							synchronized(taw1.actionsw.threadlock){
+								System.out.println("About to notify the other thread...");
+								taw1.actionsw.threadlock.notify();
+								taw1.actionsw.threadlock = true;//test
+								taw1.actionsw.startAPI = false;//test
+							}
+							/*
+							synchronized(taw2.actionsw.threadlock){
+								System.out.println("About to notify the other thread...");
+								taw2.actionsw.threadlock.notify();
+								taw2.actionsw.threadlock = true;//test
+								taw2.actionsw.startAPI = false;//test
+							}*/
+							/*
+							synchronized(taw3.actionsw.threadlock){
+								System.out.println("About to notify the other thread...");
+								taw3.actionsw.threadlock.notify();
+								taw3.actionsw.threadlock = true;//test
+								taw3.actionsw.startAPI = true;//test
+							}*/
 							//taw3.thread.join();	
 							//endresult = taw3.actionsw.getAPIRoutes();					
 						}
 					} catch (InterruptedException e) {
 						e.printStackTrace();
-					}*/
+					}
 					
 				} else{
-					taw1.actionsw.startAPI = false;
-					//taw2.actionsw.startAPI = false;
-					//taw3.actionsw.startAPI = false;
+					synchronized(taw1.actionsw.threadlock){
+						System.out.println("About to notify the other thread...");
+						taw1.actionsw.threadlock.notify();
+						taw1.actionsw.threadlock = true;//test
+						taw1.actionsw.startAPI = false;//test
+					}
+					/*
+					synchronized(taw2.actionsw.threadlock){
+						System.out.println("About to notify the other thread...");
+						taw2.actionsw.threadlock.notify();
+						taw2.actionsw.threadlock = true;//test
+						taw2.actionsw.startAPI = false;//test
+					}*/
+					/*
+					synchronized(taw3.actionsw.threadlock){
+						System.out.println("About to notify the other thread...");
+						taw3.actionsw.threadlock.notify();
+						taw3.actionsw.threadlock = true;//test
+						taw3.actionsw.startAPI = false;//test
+					}*/
 					//TODO FIND BEST RESULT WITH EUCLEDEAN METHOD
 					endresult = tar.actionsr.getRoutes()[0];
 				}
 
 				
-				//updateCache(r);
+				updateCache(endresult);
 			//}
 			outToClient.writeObject(endresult);
 			outToClient.flush();

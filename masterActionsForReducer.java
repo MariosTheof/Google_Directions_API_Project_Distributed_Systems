@@ -7,7 +7,7 @@ public class masterActionsForReducer implements Runnable{
 
 	ObjectInputStream inFromReducer;
 	ObjectOutputStream outToReducer;
-	Routes r[];//TODO ROUTES LIST
+	Routes r[];
 	public masterActionsForReducer(Socket connection){
 		try{
 			outToReducer = new ObjectOutputStream(connection.getOutputStream());
@@ -44,4 +44,3 @@ public class masterActionsForReducer implements Runnable{
 		return r;
 	}
 }
-//TODO EUCLEDEAN

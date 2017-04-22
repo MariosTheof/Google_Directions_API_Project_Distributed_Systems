@@ -40,7 +40,8 @@ public class reducerActionsForMaster implements Runnable{
 		reducerActionsForWorkers rAFW3 = new reducerActionsForWorkers(portsforworkers[2]);
 		Thread worker3Thread = new Thread(rAFW3);
 		worker3Thread.start();
-		TApair taw3 = new TApair (worker3Thread, rAFW3);*/
+		TApair taw3 = new TApair (worker3Thread, rAFW3);
+		*/
 		try {
 			//while (true) {
 			System.out.println("Opened Socket for Master with port " + reducerSocket.getLocalPort());//DEBUGGING

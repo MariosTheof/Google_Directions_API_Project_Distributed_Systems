@@ -10,6 +10,7 @@ public class masterActionsForWorkers implements Runnable{
 	Query q = null;
 	Routes r = null;
 	Boolean workerDone = false;
+	Boolean threadlock = false;
 	Boolean startAPI = false;
 	public masterActionsForWorkers(Socket connection, Query query) {
 		try {
@@ -38,11 +39,14 @@ public class masterActionsForWorkers implements Runnable{
 			/*while (startAPI == null){
 				Thread.sleep(500);
 			}*/
-			synchronized(startAPI){
-				startAPI.wait();
+			//Thread.sleep(2000);//test
+			synchronized(threadlock){
+				while(!threadlock){
+					System.out.println("Waiting TRELE MOU...");
+					threadlock.wait();
+				}
 			}
-			System.out.println("ELA");
-			startAPI = true;
+			
 			outToWorker.writeBoolean(startAPI);
 			outToWorker.flush();
 			System.out.println("ELA");

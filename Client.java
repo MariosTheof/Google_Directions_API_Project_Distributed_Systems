@@ -70,15 +70,16 @@ public class Client {
 		System.out.println(r.start.Lat + " " + r.start.Long);
 		System.out.println(r.destination.Lat + " " + r.destination.Long);
 		System.out.println(r.direction.direction);
-		//TODO
 	}
 	public static void main(String args[]) throws IOException{
-		Scanner scan = new Scanner(System.in).useLocale(Locale.US);
+		/*Scanner scan = new Scanner(System.in).useLocale(Locale.US);
 		System.out.println("Type in the starting point coordinates(Latitude then Longitude): ");
 		Point startPoint = new Point(scan.nextDouble(), scan.nextDouble());
 		System.out.println("Type in the destination point coordinates(Latitude then Longitude): ");
 		Point destinationPoint = new Point(scan.nextDouble(), scan.nextDouble());
-		scan.close();
+		scan.close();*/
+		Point startPoint = new Point(38.064157, 23.772037);//test
+		Point destinationPoint = new Point(38.055447, 23.833666);//test
 		q = createQuery(startPoint, destinationPoint);
 		initialize();
 	}
