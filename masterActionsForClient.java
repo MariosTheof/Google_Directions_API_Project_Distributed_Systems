@@ -30,9 +30,9 @@ public class masterActionsForClient implements Runnable{
 				//TApair taw2 = new Master(4322).initialize(2, q);
 				//TApair taw3 = new Master(4323).initialize(3, q);
 				try {
-					taw1.thread.join();
-					//taw2.thread.join();
-					//taw3.thread.join();
+					while(taw1.actionsw.workerDone == false /* && */){
+						Thread.sleep(250);
+					}
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -49,15 +49,54 @@ public class masterActionsForClient implements Runnable{
 				}
 				if(tar.actionsr.getRoutes() == null){
 
-					//QueryHash = Master.md5hash(Double.toString(q.startPoint.Lat)+ Double.toString(q.startPoint.Long) + Double.toString(q.endPoint.Lat) + Double.toString(q.endPoint.Long));
-
-					//TODO CASE ASSIGNWORKER FOR GOOGLE DIRECTIONS API
+					QueryHash = Master.md5hash(Double.toString(q.startPoint.Lat)+ Double.toString(q.startPoint.Long) + Double.toString(q.endPoint.Lat) + Double.toString(q.endPoint.Long));
+					int WorkerIDforAPI = assignWorker(QueryHash);
+					System.out.println("WorkerIDforAPI: " + WorkerIDforAPI);
+					synchronized(taw1.actionsw.startAPI){
+						//taw1.actionsw.startAPI = true;//test
+						taw1.actionsw.startAPI.notify();
+					}
+					try {//test
+						taw1.thread.join();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					endresult = taw1.actionsw.getAPIRoutes();//test
+					/*try {
+						if(WorkerIDforAPI == 1){
+							taw1.actionsw.startAPI = true;
+							//taw2.actionsw.startAPI = false;
+							//taw3.actionsw.startAPI = false;
+							taw1.thread.join();
+							endresult = taw1.actionsw.getAPIRoutes();
+						}else if(WorkerIDforAPI == 2){
+							taw1.actionsw.startAPI = false;
+							//taw2.actionsw.startAPI = true;
+							//taw3.actionsw.startAPI = false;
+							//taw2.thread.join();
+							//endresult = taw2.actionsw.getAPIRoutes();						
+						}else if(WorkerIDforAPI == 3){
+							taw1.actionsw.startAPI = false;
+							//taw2.actionsw.startAPI = false;
+							//taw3.actionsw.startAPI = true;
+							//taw3.thread.join();	
+							//endresult = taw3.actionsw.getAPIRoutes();					
+						}
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}*/
+					
 				} else{
+					taw1.actionsw.startAPI = false;
+					//taw2.actionsw.startAPI = false;
+					//taw3.actionsw.startAPI = false;
 					//TODO FIND BEST RESULT WITH EUCLEDEAN METHOD
+					endresult = tar.actionsr.getRoutes()[0];
 				}
+
+				
 				//updateCache(r);
 			//}
-			endresult = tar.actionsr.getRoutes()[0];
 			outToClient.writeObject(endresult);
 			outToClient.flush();
 

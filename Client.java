@@ -3,6 +3,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class Client {
@@ -68,10 +69,11 @@ public class Client {
 	private static void showResults(Routes r){
 		System.out.println(r.start.Lat + " " + r.start.Long);
 		System.out.println(r.destination.Lat + " " + r.destination.Long);
+		System.out.println(r.direction.direction);
 		//TODO
 	}
 	public static void main(String args[]) throws IOException{
-		Scanner scan = new Scanner(System.in);
+		Scanner scan = new Scanner(System.in).useLocale(Locale.US);
 		System.out.println("Type in the starting point coordinates(Latitude then Longitude): ");
 		Point startPoint = new Point(scan.nextDouble(), scan.nextDouble());
 		System.out.println("Type in the destination point coordinates(Latitude then Longitude): ");

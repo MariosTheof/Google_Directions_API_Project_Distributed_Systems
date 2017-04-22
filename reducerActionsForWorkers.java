@@ -34,13 +34,13 @@ public class reducerActionsForWorkers implements Runnable{
 			System.out.println("Reading routes from worker...");//DEBUGGING
 			r = (Routes[]) inFromWorker.readObject();
 
-			System.out.println("Worker sent r array with 1st query with points: " + r[0].start.Lat + "  " + r[0].start.Long + " " + r[0].destination.Lat + " " + r[0].destination.Long);//DEBUGGING
+			/*System.out.println("Worker sent r array with 1st query with points: " + r[0].start.Lat + "  " + r[0].start.Long + " " + r[0].destination.Lat + " " + r[0].destination.Long);//DEBUGGING
 
 			System.out.println("Changing routes...");//DEBUGGING
 			r[0].start.Lat ++;//test
 			r[0].start.Long --;//test
 			r[0].destination.Lat ++;//test
-			r[0].destination.Long --;//test
+			r[0].destination.Long --;//test*/
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {

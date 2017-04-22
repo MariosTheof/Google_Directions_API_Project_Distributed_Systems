@@ -10,6 +10,7 @@ public class masterActionsForWorkers implements Runnable{
 	Query q = null;
 	Routes r = null;
 	Boolean workerDone = false;
+	Boolean startAPI = false;
 	public masterActionsForWorkers(Socket connection, Query query) {
 		try {
 			q = query;
@@ -34,16 +35,36 @@ public class masterActionsForWorkers implements Runnable{
 
 			System.out.println("Worker is done...");//DEBUGGING
 			
+			/*while (startAPI == null){
+				Thread.sleep(500);
+			}*/
+			synchronized(startAPI){
+				startAPI.wait();
+			}
+			System.out.println("ELA");
+			startAPI = true;
+			outToWorker.writeBoolean(startAPI);
+			outToWorker.flush();
+			System.out.println("ELA");
+			if(startAPI == true){
+				r = (Routes) inFromWorker.readObject();
+			}
+			
 			outToWorker.close();
 			inFromWorker.close();
 			
 		} catch (IOException e) {
 			e.printStackTrace();
-		}/*catch (ClassNotFoundException e) {
+		}catch (InterruptedException e) {
 			e.printStackTrace();
-		}*/ //test
+		}catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} 
 	}
 	public Query getQuery(){
 		return q;
+	}
+	public Routes getAPIRoutes(){
+		return r;
 	}
 }

@@ -68,7 +68,7 @@ public class reducerActionsForMaster implements Runnable{
 		//r = MergeRoutes(taw1.actionsrw.getRoutes(), taw2.actionsrw.getRoutes(), taw3.actionsrw.getRoutes());
 		Routes r1[] = taw1.actionsrw.getRoutes();
 
-		System.out.println("thread for worker returned r array with 1st query with points: " + r1[0].start.Lat + "  " + r1[0].start.Long + " " + r1[0].destination.Lat + " " + r1[0].destination.Long);//DEBUGGING
+		//System.out.println("thread for worker returned r array with 1st query with points: " + r1[0].start.Lat + "  " + r1[0].start.Long + " " + r1[0].destination.Lat + " " + r1[0].destination.Long);//DEBUGGING
 		r = MergeRoutes(r1, r1, r1);
 
 		System.out.println("Merge Finished...");//DEBUGGING
